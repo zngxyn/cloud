@@ -1,0 +1,31 @@
+apollo:
+  meta: http://10.0.0.150:8080
+  bootstrap:
+    enabled: false
+    namespaces: application
+
+server:
+  port: 2001
+spring:
+  application:
+    name: cloud-boot-gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:2000/eureka
+
+zuul:
+  host:
+    connect-timeout-millis: 5000
+    socket-timeout-millis: 10000
+  ignored-services: '*'
+  routes:
+    service-a:
+      path: /service-a/**
+      serviceId: cloud-service-a
+    service-b:
+      path: /service-b/**
+      serviceId: cloud-service-b
+
+
+

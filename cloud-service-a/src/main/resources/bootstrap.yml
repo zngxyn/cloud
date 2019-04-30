@@ -1,0 +1,15 @@
+apollo:
+  meta: http://10.0.0.150:8080
+  bootstrap:
+    enabled: false
+    namespaces: application
+
+server:
+  port: 3001
+spring:
+  application:
+    name: cloud-service-a
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:2000/eureka
