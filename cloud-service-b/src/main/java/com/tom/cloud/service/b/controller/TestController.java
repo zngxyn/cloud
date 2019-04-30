@@ -2,6 +2,7 @@ package com.tom.cloud.service.b.controller;
 
 import com.tom.cloud.starter.common.RespVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/service-b/test")
 public class TestController {
 
     @GetMapping("/hello")
     public RespVo hello() {
-        RespVo vo = RespVo.success();
-        return vo;
+        log.info("hello");
+        return RespVo.success("i am service b");
     }
 
 }

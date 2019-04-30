@@ -1,7 +1,10 @@
 package com.tom.cloud.service.a.controller;
 
+import com.tom.cloud.service.a.feign.ServiceBTestFeign;
 import com.tom.cloud.starter.common.RespVo;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,13 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/service-a/test")
 public class TestController {
+
+    @Autowired
+    private ServiceBTestFeign serviceBTestFeign;
+
 
     @GetMapping("/hello")
     public RespVo hello() {
-        RespVo vo = RespVo.success();
-        return vo;
+        log.info("hello");
+        return RespVo.success("i am service a");
     }
 
+    @GetMapping("/feign")
+    public RespVo feign() {
+        log.info("feign");
+        return serviceBTestFeign.hello();
+    }
 }

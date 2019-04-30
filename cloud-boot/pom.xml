@@ -15,6 +15,7 @@
     <modules>
         <module>cloud-boot-eureka</module>
         <module>cloud-boot-gateway</module>
+        <module>cloud-boot-zipkin-server</module>
     </modules>
 
     <dependencies>

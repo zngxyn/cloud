@@ -13,4 +13,9 @@ public interface ErrorCode {
      */
     String SUCCESS = "0";
 
+    /**
+     * 网关错误
+     */
+    String GATEWAY_ERROR = "1";
+
 }
