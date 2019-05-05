@@ -6,15 +6,22 @@ apollo:
 
 server:
   port: 3001
-spring:
-  application:
-    name: cloud-service-a
-  zipkin:
-    base-url: http://localhost:9411/
-  sleuth:
-      sampler:
-        probability: 1
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:2000/eureka
+
+spring:
+  application:
+    name: cloud-service-a
+  sleuth:
+      sampler:
+        probability: 1
+  zipkin:
+    sender:
+      type: kafka
+    kafka:
+      topic: zipkin
+  kafka:
+    bootstrap-servers: 10.20.0.206:9092,10.20.0.207:9092,10.20.0.208:9092
+
