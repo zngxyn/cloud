@@ -24,7 +24,6 @@ public class I18nAutoConfiguration {
     }
 
     @Bean
-    @Autowired
     public I18nUtils i18nUtils(MessageSource messageSource) {
         I18nUtils i18nUtils = new I18nUtils();
         i18nUtils.setMessageSource(messageSource);

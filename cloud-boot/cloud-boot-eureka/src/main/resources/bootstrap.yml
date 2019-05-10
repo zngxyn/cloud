@@ -6,14 +6,33 @@ apollo:
 
 server:
   port: 2000
+
 eureka:
   client:
+    fetch-registry: true
+    register-with-eureka: true
     service-url:
       defaultZone: http://localhost:2000/eureka
+
+logging:
+  file: /data/logs/${spring.application.name}/info.log
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 
 spring:
   application:
     name: cloud-boot-eureka
+
+
+
 
 
 

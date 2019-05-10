@@ -5,7 +5,7 @@ apollo:
     namespaces: application
 
 server:
-  port: 3001
+  port: 2002
 
 eureka:
   client:
@@ -27,16 +27,10 @@ management:
 
 spring:
   application:
-    name: cloud-service-a
-  sleuth:
-      sampler:
-        probability: 1
-  zipkin:
-    sender:
-      type: kafka
-    kafka:
-      topic: zipkin
-  kafka:
-    bootstrap-servers: 10.30.2.222:9092,10.30.2.222:9093,10.30.2.222:9094
+    name: cloud-boot-admin
+
+
+
+
 
 

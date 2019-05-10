@@ -1,23 +1,22 @@
 package com.tom.cloud;
 
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
+import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
- * BootEurekaApplication
+ * BootAdminApplication
  *
  * @author Tom.Zeng
- * @date 2019/4/26 14:13
+ * @date 2019/5/7 15:55
  */
 @EnableApolloConfig
-@EnableEurekaServer
+@EnableAdminServer
 @SpringBootApplication
-public class BootEurekaApplication {
+public class BootAdminApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BootEurekaApplication.class, args);
+        SpringApplication.run(BootAdminApplication.class, args);
     }
-
 }
