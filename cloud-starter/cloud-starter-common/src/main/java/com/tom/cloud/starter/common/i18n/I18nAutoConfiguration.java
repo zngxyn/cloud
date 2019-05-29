@@ -1,7 +1,6 @@
 package com.tom.cloud.starter.common.i18n;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,10 +23,10 @@ public class I18nAutoConfiguration {
     }
 
     @Bean
-    public I18nUtils i18nUtils(MessageSource messageSource) {
-        I18nUtils i18nUtils = new I18nUtils();
-        i18nUtils.setMessageSource(messageSource);
-        log.info("I18nUtils has been initialized.");
-        return i18nUtils;
+    public I18nUtil i18nUtil(MessageSource messageSource) {
+        I18nUtil i18NUtil = new I18nUtil();
+        i18NUtil.setMessageSource(messageSource);
+        log.info("I18nUtil has been initialized.");
+        return i18NUtil;
     }
 }

@@ -6,12 +6,12 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import java.util.Locale;
 
 /**
- * I18nUtils
+ * I18nUtil
  *
  * @author Tom.Zeng
  * @date 2019/3/29 18:33
  */
-public class I18nUtils {
+public class I18nUtil {
 
     private static MessageSource MESSAGE;
 

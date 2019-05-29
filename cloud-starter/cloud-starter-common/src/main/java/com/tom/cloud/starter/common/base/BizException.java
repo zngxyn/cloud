@@ -1,4 +1,4 @@
-package com.tom.cloud.starter.common;
+package com.tom.cloud.starter.common.base;
 
 /**
  * BizException
@@ -8,19 +8,19 @@ package com.tom.cloud.starter.common;
  */
 public class BizException extends RuntimeException {
 
-    private String code;
+    private Code code;
     private Object[] msgArgs;
 
-    public BizException(String code) {
+    public BizException(Code code) {
         this.code = code;
     }
 
-    public BizException(String code, Object... msgArgs) {
+    public BizException(Code code, Object... msgArgs) {
         this.code = code;
         this.msgArgs = msgArgs;
     }
 
-    public String getCode() {
+    public Code getCode() {
         return code;
     }
 

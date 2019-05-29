@@ -1,11 +1,10 @@
 package com.tom.cloud.boot.gateway.controller;
 
-import com.tom.cloud.starter.common.ErrorCode;
-import com.tom.cloud.starter.common.RespVo;
+import com.tom.cloud.starter.common.base.RespVo;
+import com.tom.cloud.starter.common.base.CodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.cloud.netflix.zuul.filters.post.SendErrorFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +54,6 @@ public class GatewayErrorController implements ErrorController {
         }
 
         response.setStatus(HttpStatus.OK.value());
-        return RespVo.failure(ErrorCode.GATEWAY_ERROR, code, message);
+        return RespVo.failure(CodeEnum.GATEWAY_ERROR, code, message);
     }
 }

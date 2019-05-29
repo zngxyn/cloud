@@ -1,6 +1,6 @@
 package com.tom.cloud.service.a.feign;
 
-import com.tom.cloud.starter.common.RespVo;
+import com.tom.cloud.starter.common.base.RespVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

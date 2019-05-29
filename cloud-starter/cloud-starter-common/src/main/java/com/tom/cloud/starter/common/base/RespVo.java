@@ -1,18 +1,18 @@
-package com.tom.cloud.starter.common;
+package com.tom.cloud.starter.common.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.tom.cloud.starter.common.i18n.I18nUtils;
+import com.tom.cloud.starter.common.i18n.I18nUtil;
+import com.tom.cloud.starter.common.utils.ConfigUtil;
 
 /**
- * RespVo
+ * 统一返回对象，支持国际化
  *
  * @author Tom.Zeng
  * @date 2019/4/25 17:33
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RespVo<T> {
-
     /**
      * 错误码
      */
@@ -20,7 +20,12 @@ public class RespVo<T> {
     /**
      * 错误消息
      */
-    private String msg;
+    private String message;
+
+    /**
+     * 服务ID
+     */
+    private String service;
     /**
      * 返回数据
      */
@@ -30,6 +35,17 @@ public class RespVo<T> {
      */
     private transient Object[] msgArgs;
 
+    public RespVo() {
+        // 从配置文件读取应用名称
+        this.service = ConfigUtil.getApplicationName();
+    }
+
+    /**
+     * ===========================================
+     * getter and setter
+     * ===========================================
+     */
+
     public String getCode() {
         return code;
     }
@@ -38,16 +54,28 @@ public class RespVo<T> {
         this.code = code;
     }
 
-    public String getMsg() {
-        if (msg == null) {
-            // 从国际化中读取错误消息
-            setMsg(I18nUtils.getMessage(code, msgArgs));
+    public String getMessage() {
+        /**
+         * 1、错误消息懒加载（用到才加载）
+         * 2、国际化
+         * 3、只读取一次
+         */
+        if (message == null) {
+            setMessage(I18nUtil.getMessage(code, msgArgs));
         }
-        return msg;
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
     }
 
     public T getData() {
@@ -75,7 +103,7 @@ public class RespVo<T> {
      */
     @JsonIgnore
     public boolean isSuccess() {
-        return ErrorCode.SUCCESS.equals(code);
+        return CodeEnum.SUCCESS.getCode().equals(code);
     }
 
     /**
@@ -103,7 +131,7 @@ public class RespVo<T> {
      */
     public static <T> RespVo<T> success(T data) {
         RespVo<T> respVo = new RespVo<>();
-        respVo.setCode(ErrorCode.SUCCESS);
+        respVo.setCode(CodeEnum.SUCCESS.getCode());
         respVo.setData(data);
         return respVo;
     }
@@ -113,9 +141,9 @@ public class RespVo<T> {
      * @param code
      * @return
      */
-    public static RespVo failure(String code) {
+    public static RespVo failure(Code code) {
         RespVo respVo = new RespVo();
-        respVo.setCode(code);
+        respVo.setCode(code.getCode());
         return respVo;
     }
 
@@ -125,9 +153,9 @@ public class RespVo<T> {
      * @param msgArgs
      * @return
      */
-    public static RespVo failure(String code, Object... msgArgs) {
+    public static RespVo failure(Code code, Object... msgArgs) {
         RespVo respVo = new RespVo();
-        respVo.setCode(code);
+        respVo.setCode(code.getCode());
         respVo.setMsgArgs(msgArgs);
         return respVo;
     }
