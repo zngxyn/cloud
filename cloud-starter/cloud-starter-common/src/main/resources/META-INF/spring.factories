@@ -1,1 +1,3 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.tom.cloud.starter.common.i18n.I18nAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.tom.cloud.starter.common.i18n.I18nAutoConfiguration,\
+  com.tom.cloud.starter.common.log.HttpTraceLogAutoConfiguration

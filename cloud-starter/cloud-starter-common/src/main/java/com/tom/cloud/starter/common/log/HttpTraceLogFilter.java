@@ -3,8 +3,11 @@ package com.tom.cloud.starter.common.log;
 import com.tom.cloud.starter.common.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,6 +27,9 @@ import java.util.Map;
 @Slf4j
 public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered {
 
+    @Autowired
+    private HttpTraceLogProperties httpTraceLogProperties;
+
     public HttpTraceLogFilter() {
     }
 
@@ -34,6 +40,12 @@ public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 未开启时直接doFilter
+        if (!httpTraceLogProperties.isEnabled()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 计时
         long start = System.currentTimeMillis();
 
@@ -57,11 +69,14 @@ public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered 
             // 取出执行结果
             status = responseWrapper.getStatus();
             respBody = this.getResponseBody(responseWrapper);
+        } catch (Throwable e) {
+            respBody = "[EXCEPTION]";
+            throw e;
         } finally {
             // 打印返回日志
             log.info("<<<<< {} {}, {}/{}ms, body={}",
                     reqMethod,
-                    request.getServletPath(),
+                    reqPath,
                     status,
                     System.currentTimeMillis() - start,
                     respBody
@@ -69,6 +84,11 @@ public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered 
         }
     }
 
+    /**
+     * 包装request
+     * @param request
+     * @return
+     */
     private HttpContentCachingRequestWrapper wrap(HttpServletRequest request) {
         if (request instanceof HttpContentCachingRequestWrapper) {
             return (HttpContentCachingRequestWrapper) request;
@@ -76,6 +96,11 @@ public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered 
         return new HttpContentCachingRequestWrapper(request);
     }
 
+    /**
+     * 包装response
+     * @param response
+     * @return
+     */
     private HttpContentCachingResponseWrapper wrap(HttpServletResponse response) {
         if (response instanceof HttpContentCachingResponseWrapper) {
             return (HttpContentCachingResponseWrapper) response;
@@ -83,27 +108,43 @@ public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered 
         return new HttpContentCachingResponseWrapper(response);
     }
 
+    /**
+     * 读取request body数据
+     * @param requestWrapper
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     private String getRequestBody(HttpContentCachingRequestWrapper requestWrapper) throws UnsupportedEncodingException {
+        // multipart/form-data不读取
         String contentType = requestWrapper.getContentType();
-        if (contentType != null && contentType.contains("multipart/form-data")) {
-            return "[multipart/form-data]";
+        if (StringUtils.contains(contentType, MediaType.MULTIPART_FORM_DATA_VALUE)) {
+            return contentType;
         }
         String reqBody = new String(requestWrapper.getBody(), requestWrapper.getCharacterEncoding());
         // json格式化，去除空格换行等
-        if (contentType != null && contentType.contains("application/json")) {
+        // 仅用于开发调试，会影响性能，生产请关闭
+        if (httpTraceLogProperties.isForceJsonOneLine() && StringUtils.contains(contentType, MediaType.APPLICATION_JSON_VALUE)) {
             reqBody = JsonUtil.toString(JsonUtil.toObject(reqBody, Map.class));
         }
         return reqBody;
     }
 
+    /**
+     * 读取response body数据
+     * @param responseWrapper
+     * @return
+     * @throws IOException
+     */
     private String getResponseBody(HttpContentCachingResponseWrapper responseWrapper) throws IOException {
+        // multipart/form-data不读取
         String contentType = responseWrapper.getContentType();
-        if (contentType != null && contentType.contains("multipart/form-data")) {
-            return "[multipart/form-data]";
+        if (StringUtils.contains(contentType, MediaType.MULTIPART_FORM_DATA_VALUE)) {
+            return contentType;
         }
         String respBody = IOUtils.toString(responseWrapper.getContentInputStream(), responseWrapper.getCharacterEncoding());
         // important!
         responseWrapper.copyBodyToResponse();
         return respBody;
     }
+
 }

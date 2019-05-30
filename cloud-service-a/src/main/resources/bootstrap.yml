@@ -17,6 +17,11 @@ eureka:
 
 logging:
   file: /data/logs/${spring.application.name}/info.log
+http:
+  trace:
+    log:
+      enabled: true
+      force-json-one-line: true
 
 management:
   endpoints:

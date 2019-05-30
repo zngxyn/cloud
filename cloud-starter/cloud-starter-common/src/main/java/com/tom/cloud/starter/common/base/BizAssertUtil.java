@@ -88,4 +88,30 @@ public class BizAssertUtil {
         throw new BizException(code, msgArgs);
     }
 
+    /**
+     * 期望字符串为空(null or empty)，否则抛出BizException
+     * @param str
+     * @param code
+     * @param msgArgs
+     */
+    public static void isEmpty(String str, Code code, Object... msgArgs) {
+        if (str == null || str.isEmpty()) {
+            return;
+        }
+        throw new BizException(code, msgArgs);
+    }
+
+    /**
+     * 期望字符串不为空(not null and not empty)，否则抛出BizException
+     * @param str
+     * @param code
+     * @param msgArgs
+     */
+    public static void isNotEmpty(String str, Code code, Object... msgArgs) {
+        if (str != null && !str.isEmpty()) {
+            return;
+        }
+        throw new BizException(code, msgArgs);
+    }
+
 }
