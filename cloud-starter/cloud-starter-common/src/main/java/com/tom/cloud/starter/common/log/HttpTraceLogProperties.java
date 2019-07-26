@@ -14,14 +14,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class HttpTraceLogProperties {
 
     /**
-     * 开关：true开启/false关闭
+     * enable http trace log
      */
     private boolean enabled = true;
 
     /**
-     * 强制json字符串在一行显示
-     * 在开发调式阶段传入的json是被格式化的，未了避免输出日志格式混乱，强制删除换行、空格等
-     * 会影响性能，生产环境请关闭
+     * Force the json string to a line. Enabled only during debugging
      */
     private boolean forceJsonOneLine = false;
 
